@@ -1,0 +1,6 @@
+# Block all .env files containing secrets
+.env
+.env.*
+
+# Allow .env.example (template with placeholder values)
+!.env.example
