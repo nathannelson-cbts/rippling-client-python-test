@@ -47,7 +47,7 @@ def main():
         print("\n--- Example 1: Basic Error Handling (limited to 25) ---")
         
         try:
-            workers = list(client.workers.list(max_results=25))
+            workers = list(client.workers.list(page_size=10, max_results=25))
             print(f"Successfully fetched {len(workers)} workers")
         except RipplingAPIError as e:
             print(f"API Error: {e}")
@@ -61,7 +61,7 @@ def main():
         print("\n--- Example 2: Comprehensive Error Handling (limited to 25) ---")
         
         try:
-            departments = list(client.departments.list(max_results=25))
+            departments = list(client.departments.list(page_size=10, max_results=25))
             print(f"Successfully fetched {len(departments)} departments")
             
         except RipplingAuthError as e:
@@ -108,7 +108,7 @@ def main():
         
         for attempt in range(max_retries):
             try:
-                teams = list(client.teams.list(max_results=25))
+                teams = list(client.teams.list(page_size=10, max_results=25))
                 print(f"Attempt {attempt + 1}: Successfully fetched {len(teams)} teams")
                 break  # Success, exit retry loop
                 
@@ -148,21 +148,21 @@ def main():
             }
             
             try:
-                data['departments'] = list(client.departments.list(max_results=25))
+                data['departments'] = list(client.departments.list(page_size=10, max_results=25))
             except RipplingAPIError:
                 data['departments'] = []  # Could load from cache
                 data['source'] = 'partial'
                 print("Warning: Using fallback for departments")
             
             try:
-                data['teams'] = list(client.teams.list(max_results=25))
+                data['teams'] = list(client.teams.list(page_size=10, max_results=25))
             except RipplingAPIError:
                 data['teams'] = []
                 data['source'] = 'partial'
                 print("Warning: Using fallback for teams")
             
             try:
-                data['workers'] = list(client.workers.list(max_results=25))
+                data['workers'] = list(client.workers.list(page_size=10, max_results=25))
             except RipplingAPIError:
                 data['workers'] = []
                 data['source'] = 'partial'

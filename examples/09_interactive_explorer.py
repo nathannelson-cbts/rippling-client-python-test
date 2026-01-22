@@ -119,83 +119,83 @@ def main():
                     break
                 
                 elif choice == "1":
-                    items = list(client.companies.list(max_results=25))
+                    items = list(client.companies.list(page_size=10, max_results=25))
                     explore_resource("Companies", items)
                 
                 elif choice == "2":
-                    items = list(client.workers.list(max_results=25))
+                    items = list(client.workers.list(page_size=10, max_results=25))
                     explore_resource("Workers", items)
                 
                 elif choice == "3":
-                    items = list(client.users.list(max_results=25))
+                    items = list(client.users.list(page_size=10, max_results=25))
                     explore_resource("Users", items)
                 
                 elif choice == "4":
-                    items = list(client.departments.list(max_results=25))
+                    items = list(client.departments.list(page_size=10, max_results=25))
                     explore_resource("Departments", items)
                 
                 elif choice == "5":
-                    items = list(client.teams.list(max_results=25))
+                    items = list(client.teams.list(page_size=10, max_results=25))
                     explore_resource("Teams", items)
                 
                 elif choice == "6":
-                    items = list(client.work_locations.list(max_results=25))
+                    items = list(client.work_locations.list(page_size=10, max_results=25))
                     explore_resource("Work Locations", items)
                 
                 elif choice == "7":
-                    items = list(client.legal_entities.list(max_results=25))
+                    items = list(client.legal_entities.list(page_size=10, max_results=25))
                     explore_resource("Legal Entities", items)
                 
                 elif choice == "8":
-                    items = list(client.levels.list(max_results=25))
+                    items = list(client.levels.list(page_size=10, max_results=25))
                     explore_resource("Levels", items)
                 
                 elif choice == "9":
-                    items = list(client.tracks.list(max_results=25))
+                    items = list(client.tracks.list(page_size=10, max_results=25))
                     explore_resource("Tracks", items)
                 
                 elif choice == "10":
-                    items = list(client.compensations.list(max_results=25))
+                    items = list(client.compensations.list(page_size=10, max_results=25))
                     explore_resource("Compensations", items)
                 
                 elif choice == "11":
-                    items = list(client.leave_types.list(max_results=25))
+                    items = list(client.leave_types.list(page_size=10, max_results=25))
                     explore_resource("Leave Types", items)
                 
                 elif choice == "12":
-                    items = list(client.leave_requests.list(max_results=25))
+                    items = list(client.leave_requests.list(page_size=10, max_results=25))
                     explore_resource("Leave Requests", items)
                 
                 elif choice == "13":
-                    items = list(client.leave_balances.list(max_results=25))
+                    items = list(client.leave_balances.list(page_size=10, max_results=25))
                     explore_resource("Leave Balances", items)
                 
                 elif choice == "14":
-                    items = list(client.leave_accruals.list(max_results=25))
+                    items = list(client.leave_accruals.list(page_size=10, max_results=25))
                     explore_resource("Leave Accruals", items)
                 
                 elif choice == "15":
-                    items = list(client.time_cards.list(max_results=25))
+                    items = list(client.time_cards.list(page_size=10, max_results=25))
                     explore_resource("Time Cards", items)
                 
                 elif choice == "16":
-                    items = list(client.time_entries.list(max_results=25))
+                    items = list(client.time_entries.list(page_size=10, max_results=25))
                     explore_resource("Time Entries", items)
                 
                 elif choice == "17":
-                    items = list(client.candidates.list(max_results=25))
+                    items = list(client.candidates.list(page_size=10, max_results=25))
                     explore_resource("Candidates", items)
                 
                 elif choice == "18":
-                    items = list(client.candidate_applications.list(max_results=25))
+                    items = list(client.candidate_applications.list(page_size=10, max_results=25))
                     explore_resource("Candidate Applications", items)
                 
                 elif choice == "19":
-                    items = list(client.custom_fields.list(max_results=25))
+                    items = list(client.custom_fields.list(page_size=10, max_results=25))
                     explore_resource("Custom Fields", items)
                 
                 elif choice == "20":
-                    items = list(client.custom_objects.list(max_results=25))
+                    items = list(client.custom_objects.list(page_size=10, max_results=25))
                     explore_resource("Custom Objects", items)
                 
                 else:

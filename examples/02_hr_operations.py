@@ -40,7 +40,7 @@ def main():
         # =====================================================================
         print("\n--- Example 1: Employee Directory (limited to 25) ---")
         try:
-            workers = list(client.workers.list(max_results=25))
+            workers = list(client.workers.list(page_size=10, max_results=25))
             print(f"Fetched {len(workers)} workers (limited for demo)")
             
             # Show sample worker data
@@ -60,7 +60,7 @@ def main():
         # =====================================================================
         print("\n--- Example 2: Department Structure (limited to 25) ---")
         try:
-            departments = list(client.departments.list(max_results=25))
+            departments = list(client.departments.list(page_size=10, max_results=25))
             print(f"Fetched {len(departments)} departments")
             
             for dept in departments[:10]:  # Show first 10
@@ -74,7 +74,7 @@ def main():
         # =====================================================================
         print("\n--- Example 3: Teams (limited to 25) ---")
         try:
-            teams = list(client.teams.list(max_results=25))
+            teams = list(client.teams.list(page_size=10, max_results=25))
             print(f"Fetched {len(teams)} teams")
             
             for team in teams[:10]:  # First 10
@@ -114,7 +114,7 @@ def main():
         # =====================================================================
         print("\n--- Example 6: Compensation Data (limited to 25) ---")
         try:
-            compensations = list(client.compensations.list(max_results=25))
+            compensations = list(client.compensations.list(page_size=10, max_results=25))
             print(f"Fetched {len(compensations)} compensation records")
             
             # Show sample compensation data (be careful with sensitive data!)
@@ -148,7 +148,7 @@ def main():
         # =====================================================================
         print("\n--- Example 8: Leave Balances (limited to 25) ---")
         try:
-            balances = list(client.leave_balances.list(max_results=25))
+            balances = list(client.leave_balances.list(page_size=10, max_results=25))
             print(f"Fetched {len(balances)} leave balance records")
         except RipplingAPIError as e:
             print(f"Error: {e}")
@@ -158,7 +158,7 @@ def main():
         # =====================================================================
         print("\n--- Example 9: Leave Requests (limited to 25) ---")
         try:
-            requests = list(client.leave_requests.list(max_results=25))
+            requests = list(client.leave_requests.list(page_size=10, max_results=25))
             print(f"Fetched {len(requests)} leave requests")
             
             if requests:

@@ -40,7 +40,7 @@ def main():
         # =====================================================================
         print("\n--- Example 1: Time Cards (limited to 25) ---")
         try:
-            time_cards = list(client.time_cards.list(max_results=25))
+            time_cards = list(client.time_cards.list(page_size=10, max_results=25))
             print(f"Fetched {len(time_cards)} time cards")
             
             if time_cards:
@@ -59,7 +59,7 @@ def main():
         # =====================================================================
         print("\n--- Example 2: Time Entries (limited to 25) ---")
         try:
-            time_entries = list(client.time_entries.list(max_results=25))
+            time_entries = list(client.time_entries.list(page_size=10, max_results=25))
             print(f"Fetched {len(time_entries)} time entries")
             
             if time_entries:
@@ -91,7 +91,7 @@ def main():
         # =====================================================================
         print("\n--- Example 4: Leave Accruals (limited to 25) ---")
         try:
-            accruals = list(client.leave_accruals.list(max_results=25))
+            accruals = list(client.leave_accruals.list(page_size=10, max_results=25))
             print(f"Fetched {len(accruals)} leave accrual records")
             
             if accruals:

@@ -64,7 +64,7 @@ def main():
         print("\n--- Example 2: List Workers (limited to 25 for demo) ---")
         try:
             # Use max_results to limit pagination - fetches ~2-3 pages
-            workers = list(client.workers.list(max_results=25))
+            workers = list(client.workers.list(page_size=10, max_results=25))
             print(f"Fetched {len(workers)} workers")
             for worker in workers[:5]:  # Show first 5
                 print(f"  - {worker.id}")
@@ -77,7 +77,7 @@ def main():
         print("\n--- Example 3: List Users (limited to 25 for demo) ---")
         try:
             # Use max_results to limit pagination
-            users = list(client.users.list(max_results=25))
+            users = list(client.users.list(page_size=10, max_results=25))
             print(f"Fetched {len(users)} users")
             for user in users[:5]:  # Show first 5
                 display_name = getattr(user, 'display_name', None) or getattr(user, 'email', user.id)

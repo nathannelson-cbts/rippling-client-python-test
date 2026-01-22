@@ -37,9 +37,9 @@ def export_employee_directory(client):
     print("\n--- Use Case: Export Employee Directory (limited to 25 each) ---")
     
     try:
-        workers = list(client.workers.list(max_results=25))
-        users = list(client.users.list(max_results=25))
-        departments = list(client.departments.list(max_results=25))
+        workers = list(client.workers.list(page_size=10, max_results=25))
+        users = list(client.users.list(page_size=10, max_results=25))
+        departments = list(client.departments.list(page_size=10, max_results=25))
         
         # Create a lookup for departments
         dept_map = {d.id: d.name for d in departments}
@@ -82,7 +82,7 @@ def generate_org_chart_data(client):
     print("\n--- Use Case: Generate Org Chart Data (limited to 25) ---")
     
     try:
-        workers = list(client.workers.list(max_results=25))
+        workers = list(client.workers.list(page_size=10, max_results=25))
         
         # Build hierarchy
         org_structure = {}
@@ -131,8 +131,8 @@ def department_headcount_report(client):
     print("\n--- Use Case: Department Headcount Report (limited to 25 each) ---")
     
     try:
-        workers = list(client.workers.list(max_results=25))
-        departments = list(client.departments.list(max_results=25))
+        workers = list(client.workers.list(page_size=10, max_results=25))
+        departments = list(client.departments.list(page_size=10, max_results=25))
         
         # Create department lookup
         dept_map = {d.id: d.name for d in departments}
@@ -179,8 +179,8 @@ def leave_summary_report(client):
     print("\n--- Use Case: Leave Summary Report (limited to 25 each) ---")
     
     try:
-        leave_requests = list(client.leave_requests.list(max_results=25))
-        leave_types = list(client.leave_types.list(max_results=25))
+        leave_requests = list(client.leave_requests.list(page_size=10, max_results=25))
+        leave_types = list(client.leave_types.list(page_size=10, max_results=25))
         
         # Create leave type lookup
         type_map = {lt.id: lt.name for lt in leave_types}
@@ -223,9 +223,9 @@ def sync_check(client):
     
     try:
         # Fetch all core data
-        workers = list(client.workers.list(max_results=25))
-        departments = list(client.departments.list(max_results=25))
-        locations = list(client.work_locations.list(max_results=25))
+        workers = list(client.workers.list(page_size=10, max_results=25))
+        departments = list(client.departments.list(page_size=10, max_results=25))
+        locations = list(client.work_locations.list(page_size=10, max_results=25))
         
         # Simulate checking against another system
         # In real use, you'd compare with your internal database

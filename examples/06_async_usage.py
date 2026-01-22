@@ -51,10 +51,10 @@ async def main():
         try:
             # Launch all requests concurrently for better performance
             results = await asyncio.gather(
-                collect_list(client.companies.list(max_results=25), max_results=25),
-                collect_list(client.departments.list(max_results=25), max_results=25),
-                collect_list(client.teams.list(max_results=25), max_results=25),
-                collect_list(client.work_locations.list(max_results=25), max_results=25),
+                collect_list(client.companies.list(page_size=10, max_results=25), max_results=25),
+                collect_list(client.departments.list(page_size=10, max_results=25), max_results=25),
+                collect_list(client.teams.list(page_size=10, max_results=25), max_results=25),
+                collect_list(client.work_locations.list(page_size=10, max_results=25), max_results=25),
                 return_exceptions=True  # Don't fail all if one fails
             )
             
@@ -91,7 +91,7 @@ async def main():
         
         try:
             # First get list of workers (limited for demo)
-            workers = await collect_list(client.workers.list(max_results=25), max_results=25)
+            workers = await collect_list(client.workers.list(page_size=10, max_results=25), max_results=25)
             print(f"Fetched {len(workers)} workers")
             
             # If there's a get method, we could fetch details for multiple workers
@@ -112,10 +112,10 @@ async def main():
         try:
             # Simulate building a dashboard by fetching multiple data sources
             results = await asyncio.gather(
-                collect_list(client.workers.list(max_results=25), max_results=25),
-                collect_list(client.departments.list(max_results=25), max_results=25),
-                collect_list(client.leave_requests.list(max_results=25), max_results=25),
-                collect_list(client.leave_types.list(max_results=25), max_results=25),
+                collect_list(client.workers.list(page_size=10, max_results=25), max_results=25),
+                collect_list(client.departments.list(page_size=10, max_results=25), max_results=25),
+                collect_list(client.leave_requests.list(page_size=10, max_results=25), max_results=25),
+                collect_list(client.leave_types.list(page_size=10, max_results=25), max_results=25),
                 return_exceptions=True
             )
             
