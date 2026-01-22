@@ -7,28 +7,29 @@ Run this to interactively explore your Rippling data.
 
 import os
 import sys
+
 from dotenv import load_dotenv
 
 load_dotenv()
 
 from rippling_client import (
-    SyncRipplingClient,
-    RipplingSettings,
     RipplingAPIError,
+    RipplingSettings,
+    SyncRipplingClient,
 )
 
 
 def get_settings() -> RipplingSettings:
     """Load settings from environment variables."""
-    bearer_token = os.getenv('RIPPLING_BEARER_TOKEN')
+    bearer_token = os.getenv("RIPPLING_BEARER_TOKEN")
     if not bearer_token:
         print("ERROR: RIPPLING_BEARER_TOKEN environment variable is required")
         print("Set it in your .env file or export it in your shell")
         sys.exit(1)
-    
+
     return RipplingSettings(
-        bearer_token=bearer_token,
-        base_url=os.getenv('RIPPLING_BASE_URL', 'https://rest.ripplingapis.com'),
+        bearer_token=bearer_token,  # type: ignore[arg-type]
+        base_url=os.getenv("RIPPLING_BASE_URL", "https://rest.ripplingapis.com"),
     )
 
 
@@ -64,33 +65,33 @@ def print_menu():
 def explore_resource(name, items, max_display=10):
     """Display items from a resource."""
     print(f"\n--- {name} ({len(items)} total) ---")
-    
+
     if not items:
         print("  No items found.")
         return
-    
+
     # Show first few items
     for i, item in enumerate(items[:max_display]):
         # Try common display patterns
-        display = getattr(item, 'name', None)
+        display = getattr(item, "name", None)
         if not display:
-            display = getattr(item, 'display_name', None)
+            display = getattr(item, "display_name", None)
         if not display:
-            display = getattr(item, 'email', None)
+            display = getattr(item, "email", None)
         if not display:
             display = item.id
-        
+
         print(f"  {i+1}. {display} (ID: {item.id})")
-    
+
     if len(items) > max_display:
         print(f"  ... and {len(items) - max_display} more")
-    
+
     # Offer to show details of first item
     if items:
-        print(f"\nFirst item details:")
+        print("\nFirst item details:")
         first = items[0]
         for field in sorted(dir(first)):
-            if not field.startswith('_'):
+            if not field.startswith("_"):
                 value = getattr(first, field, None)
                 if not callable(value):
                     # Truncate long values
@@ -104,103 +105,121 @@ def main():
     print("Initializing Rippling Client...")
     settings = get_settings()
     print(f"Using API: {settings.base_url}")
-    
+
     with SyncRipplingClient(settings=settings) as client:
         print("Connected successfully!")
-        
+
         while True:
             print_menu()
-            
+
             try:
                 choice = input("Enter your choice (0-20): ").strip()
-                
+
                 if choice == "0":
                     print("Goodbye!")
                     break
-                
+
                 elif choice == "1":
                     items = list(client.companies.list(page_size=10, max_results=25))
                     explore_resource("Companies", items)
-                
+
                 elif choice == "2":
                     items = list(client.workers.list(page_size=10, max_results=25))
                     explore_resource("Workers", items)
-                
+
                 elif choice == "3":
                     items = list(client.users.list(page_size=10, max_results=25))
                     explore_resource("Users", items)
-                
+
                 elif choice == "4":
                     items = list(client.departments.list(page_size=10, max_results=25))
                     explore_resource("Departments", items)
-                
+
                 elif choice == "5":
                     items = list(client.teams.list(page_size=10, max_results=25))
                     explore_resource("Teams", items)
-                
+
                 elif choice == "6":
-                    items = list(client.work_locations.list(page_size=10, max_results=25))
+                    items = list(
+                        client.work_locations.list(page_size=10, max_results=25)
+                    )
                     explore_resource("Work Locations", items)
-                
+
                 elif choice == "7":
-                    items = list(client.legal_entities.list(page_size=10, max_results=25))
+                    items = list(
+                        client.legal_entities.list(page_size=10, max_results=25)
+                    )
                     explore_resource("Legal Entities", items)
-                
+
                 elif choice == "8":
                     items = list(client.levels.list(page_size=10, max_results=25))
                     explore_resource("Levels", items)
-                
+
                 elif choice == "9":
                     items = list(client.tracks.list(page_size=10, max_results=25))
                     explore_resource("Tracks", items)
-                
+
                 elif choice == "10":
-                    items = list(client.compensations.list(page_size=10, max_results=25))
+                    items = list(
+                        client.compensations.list(page_size=10, max_results=25)
+                    )
                     explore_resource("Compensations", items)
-                
+
                 elif choice == "11":
                     items = list(client.leave_types.list(page_size=10, max_results=25))
                     explore_resource("Leave Types", items)
-                
+
                 elif choice == "12":
-                    items = list(client.leave_requests.list(page_size=10, max_results=25))
+                    items = list(
+                        client.leave_requests.list(page_size=10, max_results=25)
+                    )
                     explore_resource("Leave Requests", items)
-                
+
                 elif choice == "13":
-                    items = list(client.leave_balances.list(page_size=10, max_results=25))
+                    items = list(
+                        client.leave_balances.list(page_size=10, max_results=25)
+                    )
                     explore_resource("Leave Balances", items)
-                
+
                 elif choice == "14":
-                    items = list(client.leave_accruals.list(page_size=10, max_results=25))
+                    items = list(
+                        client.leave_accruals.list(page_size=10, max_results=25)
+                    )
                     explore_resource("Leave Accruals", items)
-                
+
                 elif choice == "15":
                     items = list(client.time_cards.list(page_size=10, max_results=25))
                     explore_resource("Time Cards", items)
-                
+
                 elif choice == "16":
                     items = list(client.time_entries.list(page_size=10, max_results=25))
                     explore_resource("Time Entries", items)
-                
+
                 elif choice == "17":
                     items = list(client.candidates.list(page_size=10, max_results=25))
                     explore_resource("Candidates", items)
-                
+
                 elif choice == "18":
-                    items = list(client.candidate_applications.list(page_size=10, max_results=25))
+                    items = list(
+                        client.candidate_applications.list(page_size=10, max_results=25)
+                    )
                     explore_resource("Candidate Applications", items)
-                
+
                 elif choice == "19":
-                    items = list(client.custom_fields.list(page_size=10, max_results=25))
+                    items = list(
+                        client.custom_fields.list(page_size=10, max_results=25)
+                    )
                     explore_resource("Custom Fields", items)
-                
+
                 elif choice == "20":
-                    items = list(client.custom_objects.list(page_size=10, max_results=25))
+                    items = list(
+                        client.custom_objects.list(page_size=10, max_results=25)
+                    )
                     explore_resource("Custom Objects", items)
-                
+
                 else:
                     print("Invalid choice. Please enter 0-20.")
-                    
+
             except RipplingAPIError as e:
                 print(f"\nAPI Error: {e}")
             except KeyboardInterrupt:

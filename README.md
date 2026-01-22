@@ -112,7 +112,7 @@ async def main():
         bearer_token=os.getenv('RIPPLING_BEARER_TOKEN'),
         base_url=os.getenv('RIPPLING_BASE_URL', 'https://rest.ripplingapis.com'),
     )
-    
+
     async with AsyncRipplingClient(settings=settings) as client:
         # Fetch multiple resources concurrently
         workers, departments = await asyncio.gather(

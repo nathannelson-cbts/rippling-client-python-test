@@ -11,29 +11,30 @@ This script demonstrates HR-related API operations:
 
 import os
 import sys
+
 from dotenv import load_dotenv
 
 load_dotenv()
 
-from rippling_client import SyncRipplingClient, RipplingSettings, RipplingAPIError
+from rippling_client import RipplingAPIError, RipplingSettings, SyncRipplingClient
 
 
 def get_settings() -> RipplingSettings:
     """Load settings from environment variables."""
-    bearer_token = os.getenv('RIPPLING_BEARER_TOKEN')
+    bearer_token = os.getenv("RIPPLING_BEARER_TOKEN")
     if not bearer_token:
         print("ERROR: RIPPLING_BEARER_TOKEN environment variable is required")
         sys.exit(1)
-    
+
     return RipplingSettings(
-        bearer_token=bearer_token,
-        base_url=os.getenv('RIPPLING_BASE_URL', 'https://rest.ripplingapis.com'),
+        bearer_token=bearer_token,  # type: ignore[arg-type]
+        base_url=os.getenv("RIPPLING_BASE_URL", "https://rest.ripplingapis.com"),
     )
 
 
 def main():
     settings = get_settings()
-    
+
     with SyncRipplingClient(settings=settings) as client:
         # =====================================================================
         # Example 1: Get Full Employee Directory
@@ -42,13 +43,13 @@ def main():
         try:
             workers = list(client.workers.list(page_size=10, max_results=25))
             print(f"Fetched {len(workers)} workers (limited for demo)")
-            
+
             # Show sample worker data
             if workers:
                 worker = workers[0]
-                print(f"\nSample worker fields available:")
+                print("\nSample worker fields available:")
                 for field in dir(worker):
-                    if not field.startswith('_'):
+                    if not field.startswith("_"):
                         value = getattr(worker, field, None)
                         if not callable(value):
                             print(f"  {field}: {value}")
@@ -62,9 +63,13 @@ def main():
         try:
             departments = list(client.departments.list(page_size=10, max_results=25))
             print(f"Fetched {len(departments)} departments")
-            
+
             for dept in departments[:10]:  # Show first 10
-                parent_info = f" (Parent: {dept.parent_id})" if hasattr(dept, 'parent_id') and dept.parent_id else ""
+                parent_info = (
+                    f" (Parent: {dept.parent_id})"
+                    if hasattr(dept, "parent_id") and dept.parent_id
+                    else ""
+                )
                 print(f"  - {dept.name}{parent_info}")
         except RipplingAPIError as e:
             print(f"Error: {e}")
@@ -76,7 +81,7 @@ def main():
         try:
             teams = list(client.teams.list(page_size=10, max_results=25))
             print(f"Fetched {len(teams)} teams")
-            
+
             for team in teams[:10]:  # First 10
                 print(f"  - {team.name} (ID: {team.id})")
         except RipplingAPIError as e:
@@ -89,7 +94,7 @@ def main():
         try:
             levels = list(client.levels.list())
             print(f"Total levels: {len(levels)}")
-            
+
             for level in levels:
                 print(f"  - {level.name}")
         except RipplingAPIError as e:
@@ -102,7 +107,7 @@ def main():
         try:
             entities = list(client.legal_entities.list())
             print(f"Total legal entities: {len(entities)}")
-            
+
             for entity in entities:
                 name = entity.legal_name or "(no legal name)"
                 print(f"  - {name} (ID: {entity.id})")
@@ -114,15 +119,17 @@ def main():
         # =====================================================================
         print("\n--- Example 6: Compensation Data (limited to 25) ---")
         try:
-            compensations = list(client.compensations.list(page_size=10, max_results=25))
+            compensations = list(
+                client.compensations.list(page_size=10, max_results=25)
+            )
             print(f"Fetched {len(compensations)} compensation records")
-            
+
             # Show sample compensation data (be careful with sensitive data!)
             if compensations:
                 comp = compensations[0]
-                print(f"\nSample compensation record fields:")
+                print("\nSample compensation record fields:")
                 for field in dir(comp):
-                    if not field.startswith('_'):
+                    if not field.startswith("_"):
                         value = getattr(comp, field, None)
                         if not callable(value):
                             # Mask sensitive values
@@ -137,7 +144,7 @@ def main():
         try:
             leave_types = list(client.leave_types.list())
             print(f"Total leave types: {len(leave_types)}")
-            
+
             for lt in leave_types:
                 print(f"  - {lt.name} (ID: {lt.id})")
         except RipplingAPIError as e:
@@ -160,12 +167,12 @@ def main():
         try:
             requests = list(client.leave_requests.list(page_size=10, max_results=25))
             print(f"Fetched {len(requests)} leave requests")
-            
+
             if requests:
                 req = requests[0]
-                print(f"\nSample leave request fields:")
+                print("\nSample leave request fields:")
                 for field in dir(req):
-                    if not field.startswith('_'):
+                    if not field.startswith("_"):
                         value = getattr(req, field, None)
                         if not callable(value):
                             print(f"  {field}: {value}")

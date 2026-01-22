@@ -8,27 +8,28 @@ Before running, ensure you have a .env file with RIPPLING_BEARER_TOKEN set.
 
 import os
 import sys
+
 from dotenv import load_dotenv
 
 # Load environment variables from .env file
 load_dotenv()
 
-from rippling_client import SyncRipplingClient, RipplingSettings, RipplingAPIError
+from rippling_client import RipplingAPIError, RipplingSettings, SyncRipplingClient
 
 
 def get_settings() -> RipplingSettings:
     """Load settings from environment variables."""
-    bearer_token = os.getenv('RIPPLING_BEARER_TOKEN')
+    bearer_token = os.getenv("RIPPLING_BEARER_TOKEN")
     if not bearer_token:
         print("ERROR: RIPPLING_BEARER_TOKEN environment variable is required")
         print("Set it in your .env file or export it in your shell")
         sys.exit(1)
-    
+
     # Optional: Override base URL for sandbox/testing
-    base_url = os.getenv('RIPPLING_BASE_URL', 'https://rest.ripplingapis.com')
-    
+    base_url = os.getenv("RIPPLING_BASE_URL", "https://rest.ripplingapis.com")
+
     return RipplingSettings(
-        bearer_token=bearer_token,
+        bearer_token=bearer_token,  # type: ignore[arg-type]
         base_url=base_url,
     )
 
@@ -40,10 +41,10 @@ def main():
     print("=" * 60)
     print("Initializing Rippling Client")
     print("=" * 60)
-    
+
     settings = get_settings()
     print(f"Using API base URL: {settings.base_url}")
-    
+
     # Create the client with settings
     with SyncRipplingClient(settings=settings) as client:
         # =====================================================================
@@ -80,7 +81,9 @@ def main():
             users = list(client.users.list(page_size=10, max_results=25))
             print(f"Fetched {len(users)} users")
             for user in users[:5]:  # Show first 5
-                display_name = getattr(user, 'display_name', None) or getattr(user, 'email', user.id)
+                display_name = getattr(user, "display_name", None) or getattr(
+                    user, "email", user.id
+                )
                 print(f"  - {display_name}")
         except RipplingAPIError as e:
             print(f"Error fetching users: {e}")

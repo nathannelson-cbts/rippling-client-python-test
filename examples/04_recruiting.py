@@ -9,29 +9,35 @@ This script demonstrates Applicant Tracking System operations:
 
 import os
 import sys
+
 from dotenv import load_dotenv
 
 load_dotenv()
 
-from rippling_client import SyncRipplingClient, RipplingSettings, RipplingAPIError, RipplingAuthError
+from rippling_client import (
+    RipplingAPIError,
+    RipplingAuthError,
+    RipplingSettings,
+    SyncRipplingClient,
+)
 
 
 def get_settings() -> RipplingSettings:
     """Load settings from environment variables."""
-    bearer_token = os.getenv('RIPPLING_BEARER_TOKEN')
+    bearer_token = os.getenv("RIPPLING_BEARER_TOKEN")
     if not bearer_token:
         print("ERROR: RIPPLING_BEARER_TOKEN environment variable is required")
         sys.exit(1)
-    
+
     return RipplingSettings(
-        bearer_token=bearer_token,
-        base_url=os.getenv('RIPPLING_BASE_URL', 'https://rest.ripplingapis.com'),
+        bearer_token=bearer_token,  # type: ignore[arg-type]
+        base_url=os.getenv("RIPPLING_BASE_URL", "https://rest.ripplingapis.com"),
     )
 
 
 def main():
     settings = get_settings()
-    
+
     with SyncRipplingClient(settings=settings) as client:
         # =====================================================================
         # Example 1: List Candidates
@@ -40,16 +46,16 @@ def main():
         try:
             candidates = list(client.candidates.list())
             print(f"Total candidates: {len(candidates)}")
-            
+
             if candidates:
                 candidate = candidates[0]
-                print(f"\nSample candidate fields:")
+                print("\nSample candidate fields:")
                 for field in dir(candidate):
-                    if not field.startswith('_'):
+                    if not field.startswith("_"):
                         value = getattr(candidate, field, None)
                         if not callable(value):
                             # Mask PII
-                            if field in ('email', 'phone', 'name'):
+                            if field in ("email", "phone", "name"):
                                 print(f"  {field}: [MASKED]")
                             else:
                                 print(f"  {field}: {value}")
@@ -66,12 +72,12 @@ def main():
         try:
             applications = list(client.candidate_applications.list())
             print(f"Total applications: {len(applications)}")
-            
+
             if applications:
                 app = applications[0]
-                print(f"\nSample application fields:")
+                print("\nSample application fields:")
                 for field in dir(app):
-                    if not field.startswith('_'):
+                    if not field.startswith("_"):
                         value = getattr(app, field, None)
                         if not callable(value):
                             print(f"  {field}: {value}")

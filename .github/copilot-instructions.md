@@ -191,11 +191,12 @@ Before running, ensure you have a .env file with RIPPLING_BEARER_TOKEN set.
 
 ### Code Quality Tools
 
-| Tool | Purpose |
-|------|---------|
-| Black | Code formatting (line-length=88) |
-| Ruff | Linting |
-| Mypy | Type checking (optional but recommended) |
+| Tool | Config | Purpose |
+|------|--------|--------|
+| Black | line-length=88 | Code formatting |
+| Ruff | E, F, I, UP, B, C4, SIM, PGH | Linting |
+| Mypy | warn-redundant-casts | Type checking |
+| pre-commit | required | Git hooks |
 
 ---
 
@@ -340,9 +341,9 @@ def get_settings() -> RipplingSettings:
         print("ERROR: RIPPLING_BEARER_TOKEN environment variable is required")
         print("Set it in your .env file or export it in your shell")
         sys.exit(1)
-    
+
     base_url = os.getenv('RIPPLING_BASE_URL', 'https://rest.ripplingapis.com')
-    
+
     return RipplingSettings(
         bearer_token=bearer_token,
         base_url=base_url,
@@ -354,9 +355,9 @@ def main() -> None:
     print("=" * 60)
     print("[Example Title]")
     print("=" * 60)
-    
+
     settings = get_settings()
-    
+
     with SyncRipplingClient(settings=settings) as client:
         # Your example code here
         pass
@@ -390,11 +391,12 @@ python test_connection.py
 # Run an example
 python examples/01_basic_usage.py
 
-# Format code
-black examples/ test_connection.py
+# Code quality (run before commits)
+black examples/ test_connection.py && ruff check examples/ test_connection.py && mypy examples/ test_connection.py --ignore-missing-imports
 
-# Lint code (optional)
-ruff check examples/ test_connection.py
+# Pre-commit hooks
+pre-commit install          # Install (once per clone)
+pre-commit run --all-files  # Run manually
 ```
 
 ---
@@ -479,10 +481,12 @@ test(workers): add bulk retrieval test
 | Python Version | 3.11+ |
 | Project Layout | Flat (examples/, docs/) |
 | Formatter | Black (88 chars) |
-| Linter | Ruff (optional) |
+| Linter | Ruff |
+| Type Checker | Mypy |
 | Env Management | python-dotenv + .env |
 | Commits | Conventional Commits |
 | Secrets | .env file (gitignored) |
+| Git Hooks | pre-commit (required) |
 
 ---
 
